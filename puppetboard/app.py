@@ -1177,8 +1177,11 @@ def offline_static(filename):
     elif filename.endswith('.js'):
         mimetype = 'text/javascript'
 
-    return Response(response=render_template('static/%s' % filename),
+    resp = Response(response=render_template('static/%s' % filename),
                     status=200, mimetype=mimetype)
+    resp.cache_control.max_age = 43200
+    resp.cache_control.public = True
+    return resp
 
 
 @app.route('/status')
